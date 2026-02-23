@@ -51,7 +51,21 @@ async function parseText(text) {
         const cleanJson = textResponse.replace(/^```json\n|```$/g, '');
         return JSON.parse(cleanJson);
     } catch (error) {
-        console.error("Gemini Text Error:", error);
+        console.error("❌ ERRO DETALHADO EM parseText (Gemini Text Error):");
+        console.error("➡ Mensagem:", error.message);
+        console.error("➡ Status da Requisição:", error.status || "N/A");
+
+        // Verifica se o erro possui detalhes da resposta HTTP original da API
+        if (error.response) {
+            console.error("➡ Resposta da API:", error.response);
+        }
+
+        // Erros do próprio SDK do Google muitas vezes possuem um array de custom details
+        if (error.details) {
+            console.error("➡ Detalhes do Erro:", error.details);
+        }
+
+        console.error("➡ Stack Trace:", error.stack);
         return null;
     }
 }
