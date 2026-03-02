@@ -28,7 +28,14 @@ app.get('/webhook', (req, res) => {
     } else {
       res.sendStatus(403);
     }
+  } else {
+    res.sendStatus(400);
   }
+});
+
+// Health check endpoint (Useful for Render)
+app.get('/', (req, res) => {
+  res.status(200).send('Servidor rodando OK!');
 });
 
 // 2. Message Handler (POST)
