@@ -74,7 +74,7 @@ app.post('/webhook', async (req, res) => {
         if (parsedData) {
           console.log('Parsed Data:', parsedData);
           await sheetService.addRow(parsedData);
-          await sendWhatsAppMessage(from, `✅ Gasto registrado!\nData: ${parsedData.data || 'N/A'}\nItem: ${parsedData.item}\nQuantidade: ${parsedData.quantidade}\nValor: R$ ${parsedData.valor}\nCategoria: ${parsedData.categoria} -> ${parsedData.subcategoria}\nObra: ${parsedData.projeto}`);
+          await sendWhatsAppMessage(from, `✅ Gasto registrado!\nData: ${parsedData.data || 'N/A'}\nItem: ${parsedData.item}\nQuantidade: ${parsedData.quantidade}\nValor: R$ ${parsedData.valor}\nCategoria: ${parsedData.categoria} -> ${parsedData.subcategoria}`);
         } else {
           await sendWhatsAppMessage(from, '❌ Não entendi. Tente áudio ou texto: "Comprei 10 sacos de cimento por 300 reais para obra centro".');
         }
