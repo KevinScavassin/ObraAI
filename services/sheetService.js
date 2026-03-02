@@ -41,23 +41,24 @@ async function addRow(data) {
     const sheets = google.sheets({ version: 'v4', auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
-    // Expected columns: Timestamp, Item, Price, Quantity, Category, Project
+    // Colunas Esperadas: Timestamp (Registro), Data da Compra, Item, Valor, Quantidade, Categoria, Subcategoria, Projeto
     const values = [
         [
-            new Date().toLocaleString('pt-BR'), // Timestamp
-            data.item,
-            data.price,
-            data.quantity,
-            data.category,
-            data.project,
-            JSON.stringify(data) // Raw data just in case
+            new Date().toLocaleString('pt-BR'), // A: Timestamp de registro do sistema
+            data.data || "N/A",                 // B: Data efetiva da compra (extraída ou padrão)
+            data.item || "N/A",                 // C: Item
+            data.valor || 0,                    // D: Valor
+            data.quantidade || 0,               // E: Quantidade
+            data.categoria || "N/A",            // F: Categoria
+            data.subcategoria || "N/A",         // G: Subcategoria
+            data.projeto || "N/A"               // H: Projeto
         ]
     ];
 
     try {
         await sheets.spreadsheets.values.append({
             spreadsheetId,
-            range: 'Gastos!A:G', // User confirmed sheet name is "Gastos"
+            range: 'Gastos!A:H', // Atualizado para ir até a coluna H
             valueInputOption: 'USER_ENTERED',
             resource: { values }
         });
