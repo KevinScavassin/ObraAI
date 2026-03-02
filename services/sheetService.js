@@ -24,12 +24,11 @@ async function authorize() {
         return null;
     }
 
-    jwtClient = new google.auth.JWT(
-        clientEmail,
-        null,
-        privateKey,
-        ['https://www.googleapis.com/auth/spreadsheets']
-    );
+    jwtClient = new google.auth.JWT({
+        email: clientEmail,
+        key: privateKey,
+        scopes: ['https://www.googleapis.com/auth/spreadsheets']
+    });
 
     await jwtClient.authorize();
     return jwtClient;
