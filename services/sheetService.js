@@ -57,7 +57,7 @@ async function addRow(data) {
     try {
         await sheets.spreadsheets.values.append({
             spreadsheetId,
-            range: 'Sheet1!A:G', // Adjust 'Sheet1' if needed
+            range: 'Gastos!A:G', // User confirmed sheet name is "Gastos"
             valueInputOption: 'USER_ENTERED',
             resource: { values }
         });
