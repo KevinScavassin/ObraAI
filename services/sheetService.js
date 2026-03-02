@@ -41,23 +41,24 @@ async function addRow(data) {
     const sheets = google.sheets({ version: 'v4', auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
-    // Colunas Esperadas: Timestamp (Registro), Data da Compra, Item, Valor, Quantidade, Categoria, Subcategoria
+    // Colunas Esperadas: Timestamp (Registro), Data da Compra, Item, Valor, Quantidade, Medida, Categoria, Subcategoria
     const values = [
         [
             new Date().toLocaleString('pt-BR'), // A: Timestamp de registro do sistema
-            data.data || "N/A",                 // B: Data efetiva da compra (extraída ou padrão)
-            data.item || "N/A",                 // C: Item
+            data.data || "",                    // B: Data efetiva da compra (extraída ou padrão)
+            data.item || "",                    // C: Item
             data.valor || 0,                    // D: Valor
             data.quantidade || 0,               // E: Quantidade
-            data.categoria || "N/A",            // F: Categoria
-            data.subcategoria || "N/A",         // G: Subcategoria
+            data.medida || "",                  // F: Medida (null/vazio ficará a célula em branco)
+            data.categoria || "",               // G: Categoria
+            data.subcategoria || "",            // H: Subcategoria (null/vazio ficará a célula em branco)
         ]
     ];
 
     try {
         await sheets.spreadsheets.values.append({
             spreadsheetId,
-            range: 'Gastos!A:G', // Atualizado para ir até a coluna G
+            range: 'Gastos!A:H', // Atualizado para ir até a coluna H
             valueInputOption: 'USER_ENTERED',
             resource: { values }
         });
