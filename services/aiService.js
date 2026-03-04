@@ -12,7 +12,7 @@ Extraia os seguintes detalhes do relato de gasto no formato JSON:
 - quantidade: Quantidade comprada (somente número)
 - medida: Unidade de medida do item. Identifique no relato de gasto, exemplos: "KG", "sacos", "m³", "litros", "unidades", etc. Se não mencionado e for algo contável (como canos, blocos, etc), use "unidades". Se não houver medida aplicável (ex: terreno, mão de obra, serviços), retorne null.
 - categoria: Categoria do gasto. Tente encaixar em uma destas: "Materiais Básicos", "Estrutural", "Acabamento", "Terreno", "Alvenaria", "Mão de Obra", "Elétrica", "Hidráulica", "Projetos", "Taxas e Impostos", "Fundação", "Esquadrias", "Marcenaria", "Paisagismo", "Lazer", "Consumo", "Equipamentos".
-- subcategoria: Subcategoria do item. Tente encaixar em uma destas: "Areia", "Treliça", "Piso", "Tijolo", "Pagamento Pedreiro", "Fio", "Cano", "arquiteto", "registros em cartorio", "Terraplanagem", "Janelas", "Armario", "Portas", "jardim", "Piscina", "quadra de areia", "condominio", "agua", "luz", "aluguel de maquina", "caçambas". Se não houver subcategoria aplicável, retorne null.
+- subcategoria: Subcategoria do item. Tente encaixar em uma destas: "Cimento", "Areia", "Treliça", "Piso", "Tijolo", "Pagamento Pedreiro", "Fio", "Cano", "arquiteto", "registros em cartorio", "Terraplanagem", "Janelas", "Armario", "Portas", "jardim", "Piscina", "quadra de areia", "condominio", "agua", "luz", "aluguel de maquina", "caçambas". Se não houver subcategoria aplicável, retorne null.
 
 Se algum campo estiver faltando e não puder ser deduzido, retorne null (sem aspas) ou 0 para números.
 Retorne SOMENTE o JSON cru, sem formatação markdown ou blocos de código "json".

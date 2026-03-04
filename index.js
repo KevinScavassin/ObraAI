@@ -38,6 +38,8 @@ app.get('/', (req, res) => {
   res.status(200).send('Servidor rodando OK!');
 });
 
+const processedMessageIds = new Set();
+
 // 2. Message Handler (POST)
 app.post('/webhook', async (req, res) => {
   const body = req.body;
@@ -51,8 +53,22 @@ app.post('/webhook', async (req, res) => {
       body.entry[0].changes[0].value.messages[0]
     ) {
       const message = body.entry[0].changes[0].value.messages[0];
+      const messageId = message.id;
       const from = message.from;
       const type = message.type;
+
+      if (messageId && processedMessageIds.has(messageId)) {
+        console.log(`Mensagem duplicada ignorada: ${messageId}`);
+        return res.sendStatus(200);
+      }
+      if (messageId) {
+        processedMessageIds.add(messageId);
+        // Keep only recent 100 messages to prevent memory leak
+        if (processedMessageIds.size > 100) {
+          const firstItem = processedMessageIds.values().next().value;
+          processedMessageIds.delete(firstItem);
+        }
+      }
 
       console.log(`Received ${type} from ${from}`);
 
