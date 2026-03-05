@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const axios = require('axios');
 const aiService = require('./services/aiService');
-const sheetService = require('./services/sheetService');
+const emailService = require('./services/emailService');
 
 dotenv.config();
 
@@ -89,7 +89,7 @@ app.post('/webhook', async (req, res) => {
 
         if (parsedData) {
           console.log('Parsed Data:', parsedData);
-          await sheetService.addRow(parsedData);
+          await emailService.sendExpenseEmail(parsedData);
           await sendWhatsAppMessage(from, `✅ Gasto registrado!\nData: ${parsedData.data || 'N/A'}\nItem: ${parsedData.item}\nQuantidade: ${parsedData.quantidade}\nValor: R$ ${parsedData.valor}\nCategoria: ${parsedData.categoria} -> ${parsedData.subcategoria}`);
         } else {
           await sendWhatsAppMessage(from, '❌ Não entendi. Tente áudio ou texto: "Comprei 10 sacos de cimento por 300 reais para obra centro".');
