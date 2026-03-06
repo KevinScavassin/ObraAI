@@ -1,27 +1,16 @@
-const nodemailer = require('nodemailer');
+const axios = require('axios');
 
 async function sendExpenseEmail(data) {
-    // Configuração do remetente (precisará de uma Senha de App do Gmail)
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
+    // A URL mágica do Formspree que vai disparar o e-mail
+    const formspreeUrl = process.env.FORMSPREE_URL;
 
-    // O corpo do e-mail trará os dados formatados de um jeito fácil pro Power Automate ler
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: process.env.FACENS_EMAIL,
-        subject: '[NOVO GASTO OBRA]',
-        text: `
+    if (!formspreeUrl) {
+        console.error('URL do Formspree não configurada no .env');
+        return false;
+    }
+
+    // O corpo do e-mail trará os dados formatados
+    const emailBody = `
       Data: ${data.data || new Date().toLocaleString('pt-BR')}
       Item: ${data.item || ""}
       Valor: ${data.valor || 0}
@@ -29,15 +18,20 @@ async function sendExpenseEmail(data) {
       Medida: ${data.medida || ""}
       Categoria: ${data.categoria || ""}
       Subcategoria: ${data.subcategoria || ""}
-    `
-    };
+    `;
 
     try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log('E-mail enviado para o Power Automate:', info.messageId);
+        // Envia os dados como um formulário web simples
+        await axios.post(formspreeUrl, {
+            email: process.env.FACENS_EMAIL,
+            message: emailBody,
+            _subject: '[NOVO GASTO OBRA]' // Força o assunto pro Power Automate ler
+        });
+
+        console.log('Dados enviados pro Formspree com sucesso!');
         return true;
     } catch (error) {
-        console.error('Erro ao enviar e-mail:', error);
+        console.error('Erro ao enviar dados pro Formspree:', error.message);
         return false;
     }
 }
